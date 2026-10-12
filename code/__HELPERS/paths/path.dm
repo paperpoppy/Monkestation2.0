@@ -60,11 +60,11 @@
 		return list()
 	return return_val
 
-/proc/get_astar_path_to(atom/movable/requester, atom/end, dist = TYPE_PROC_REF(/turf, heuristic_cardinal_3d), maxnodes, maxnodedepth = 30, mintargetdist, adjacent = TYPE_PROC_REF(/turf, reachable_turf_test), list/access = list(), turf/exclude, simulated_only = TRUE, check_z_levels = TRUE, smooth_diagonals = TRUE)
+/proc/get_astar_path_to(atom/movable/requester, atom/end, max_distance = 30, mintargetdist, list/access = list(), turf/exclude, check_z_levels = TRUE, smooth_diagonals = TRUE)
 	var/list/hand_around = list()
 	// We're guarenteed that list will be the first list in pathfinding_finished's argset because of how callback handles the arguments list
 	var/datum/callback/await = list(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(pathfinding_finished), hand_around))
-	if(!SSpathfinder.astar_pathfind(requester, end, dist, maxnodes, maxnodedepth, mintargetdist, adjacent, access, exclude, simulated_only, check_z_levels, smooth_diagonals, await))
+	if(!SSpathfinder.astar_pathfind(requester, end, max_distance, mintargetdist, access, exclude, check_z_levels, smooth_diagonals, await))
 		return list()
 
 	UNTIL(length(hand_around))
@@ -373,10 +373,8 @@
 		src.camera_type = construct_from.type
 	src.is_bot = isbot(construct_from)
 
-	// monkestation start: add TRAIT_GOES_THROUGH_WOODEN_BARRICADES
 	if(HAS_TRAIT(construct_from, TRAIT_GOES_THROUGH_WOODEN_BARRICADES))
 		goes_thru_barricades = TRUE
-	// monkestation end
 
 	if(construct_from.pulling)
 		src.pulling_info = new(construct_from.pulling, access, no_id, call_depth + 1)

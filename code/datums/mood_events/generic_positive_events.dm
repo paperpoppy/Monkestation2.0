@@ -374,8 +374,8 @@
 	description = "This hat fills me with whimsical joy!"
 	mood_change = 2
 
-/datum/mood_event/has_borer
-	description = "i feel content, the melody completes me."
+/datum/mood_event/willing_borer
+	description = "I feel content, the melody completes me."
 	mood_change = 5
 
 /datum/mood_event/thrall_darkspawn

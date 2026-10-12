@@ -10,6 +10,8 @@
 	var/hood_down_overlay_suffix = ""
 	/// Reference to hood object, if it exists
 	var/obj/item/clothing/head/hooded/hood
+	/// Hood respects the suit's greyscale.Initialize(mapload)
+	var/respect_suit_greyscale = FALSE
 
 /obj/item/clothing/suit/hooded/Initialize(mapload)
 	. = ..()
@@ -27,14 +29,26 @@
 		on_created = CALLBACK(src, PROC_REF(on_hood_created)),\
 		on_deployed = CALLBACK(src, PROC_REF(on_hood_up)),\
 		on_removed = CALLBACK(src, PROC_REF(on_hood_down)),\
+		overslot_check = CALLBACK(src, PROC_REF(can_overslot)),\
 	)
 
 /obj/item/clothing/suit/hooded/Destroy()
 	hood = null
 	return ..()
 
+/// Any hood greyscale should respect the main suit's greyscale.
+/obj/item/clothing/suit/hooded/update_greyscale()
+	..()
+	if(respect_suit_greyscale && istype(hood) && src.greyscale_colors && src.greyscale_colors != hood.greyscale_colors)
+		hood.greyscale_colors = src.greyscale_colors
+		hood.update_greyscale()
+
 /// Override to only create the hood conditionally
 /obj/item/clothing/suit/hooded/proc/can_create_hood()
+	return TRUE
+
+/// Override to disable overslotting.
+/obj/item/clothing/suit/hooded/proc/can_overslot(obj/item/hat)
 	return TRUE
 
 /// Called when the hood is instantiated
@@ -42,6 +56,9 @@
 	SHOULD_CALL_PARENT(TRUE)
 	src.hood = hood
 	RegisterSignal(hood, COMSIG_QDELETING, PROC_REF(on_hood_deleted))
+	if(respect_suit_greyscale && src.greyscale_colors && istype(hood) && src.greyscale_colors != hood.greyscale_colors)
+		hood.greyscale_colors = src.greyscale_colors
+		src.update_greyscale() // hood greyscale will update itself when suit does. Keeps them in sync.
 
 /// Called when hood is deleted
 /obj/item/clothing/suit/hooded/proc/on_hood_deleted()

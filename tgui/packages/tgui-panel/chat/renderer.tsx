@@ -49,7 +49,7 @@ export const TGUI_CHAT_ATTRIBUTES_TO_PROPS = {
 const createHighlightNode = (text, color) => {
   const node = document.createElement('span');
   node.className = 'Chat__highlight';
-  node.setAttribute('style', `background-color:${color}`);
+  node.setAttribute('style', `--highlight-color:${color}`);
   node.textContent = text;
   return node;
 };
@@ -437,10 +437,19 @@ class ChatRenderer {
             outputProps[canon_name] = working_value;
           }
           const oldHtml = { __html: childNode.innerHTML };
+          const Element = TGUI_CHAT_COMPONENTS[targetName];
+          if (!Element) {
+            logger.error(
+              `Error: unknown chat component "${targetName}" in message`,
+              message,
+            );
+            childNode.removeAttribute('data-component');
+            continue;
+          }
+
           while (childNode.firstChild) {
             childNode.removeChild(childNode.firstChild);
           }
-          const Element = TGUI_CHAT_COMPONENTS[targetName];
 
           const reactRoot = createRoot(childNode);
           /* eslint-disable react/no-danger */
@@ -465,6 +474,10 @@ class ChatRenderer {
               );
               if (highlighted && parser.highlightWholeMessage) {
                 node.className += ' ChatMessage--highlighted';
+                node.style.setProperty(
+                  '--highlight-color',
+                  parser.highlightColor,
+                );
               }
             });
         }

@@ -353,6 +353,12 @@
 	cost = PAYCHECK_CREW * 5
 	contains = list(/obj/item/climbing_hook)
 
+/datum/supply_pack/goody/pet_mouse
+	name = "Pet Mouse"
+	desc = "Many people consider mice to be vermin, or dirty lab animals for experimentation, or a culinary delicacy. That's why we're not asking any questions, here."
+	cost = PAYCHECK_CREW * 1.5
+	contains = list(/obj/item/pet_carrier/small/mouse)
+
 /datum/supply_pack/goody/summoner_nifsoft
 	name = "Grimoire Caeruleam NIFSoft"
 	desc = "Contains a single Grimoire Caeruleam NIFSoft uploader disk."
@@ -374,3 +380,10 @@
 	desc = "It really is just that shrimple."
 	cost = PAYCHECK_CREW * 4
 	contains = list(/obj/item/toy/plush/shrimp)
+
+/datum/supply_pack/goody/modmegaphone
+	name = "MOD Megaphone Module"
+	desc = "Contains one MOD mounted megaphone to force underlings to pay attention."
+	cost = PAYCHECK_COMMAND * 2.5
+	access_view = ACCESS_COMMAND
+	contains = list(/obj/item/mod/module/megaphone)

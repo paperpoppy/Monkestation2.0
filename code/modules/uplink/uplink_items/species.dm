@@ -4,7 +4,7 @@
 
 /datum/uplink_item/species_restricted
 	category = /datum/uplink_category/species
-	purchasable_from = ~(UPLINK_NUKE_OPS | UPLINK_CLOWN_OPS)
+	purchasable_from = ~(UPLINK_NUKE_OPS | UPLINK_CLOWN_OPS | UPLINK_SPY)
 
 /datum/uplink_item/species_restricted/moth_lantern
 	name = "Extra-Bright Lantern"
@@ -46,4 +46,11 @@
 	cost = 10
 	item = /obj/item/book/granter/martial/tribal_claw
 	restricted_species = list(SPECIES_LIZARD)
+
+/datum/uplink_item/species_restricted/tacticool_plasmaman
+	name = "Tacticool Plasmaman Outfit"
+	desc = "A badass plasmaman outfit, for our most badass plasmamen. This syndicate themed suit package provides no tactical advantage whatsoever."
+	cost = 1
+	item = /obj/item/storage/box/syndie_kit/plasmaman
+	restricted_species = list(SPECIES_PLASMAMAN)
 

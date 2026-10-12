@@ -206,8 +206,10 @@
 /obj/item/gun/ballistic/proc/add_notes_ballistic()
 	if(magazine) // Make sure you have a magazine, to get the notes from
 		return "\n[magazine.add_notes_box()]"
-	else
-		return "\nThe warning attached to the magazine is missing..."
+	else if(chambered) // if you don't have a magazine, is there something chambered?
+		return "\n[chambered.add_notes_ammo()]"
+	else // we have a very expensive mechanical paperweight.
+		return "\nThe lack of magazine and usable cartridge in chamber makes its usefulness questionable, at best."
 
 /obj/item/gun/ballistic/vv_edit_var(vname, vval)
 	. = ..()
@@ -603,6 +605,10 @@
 		. += span_danger("You get the feeling this might explode if you fire it....")
 		if(misfire_probability > 0)
 			. += span_danger("Given the state of the gun, there is a [misfire_probability]% chance it'll misfire.")
+	if(HAS_TRAIT(user, TRAIT_XRAY_VISION))
+		if(istype(src, /obj/item/gun/ballistic/rifle/rebarxbow) || istype(src, /obj/item/gun/ballistic/bow)) // Excluding bows & crossbows
+			return
+		. += span_info("You scan the chamber with your X-ray vision: [(chambered) ? "you see \a [chambered.name]!" : "it is empty."]")
 
 ///Gets the number of bullets in the gun
 /obj/item/gun/ballistic/proc/get_ammo(countchambered = TRUE)
